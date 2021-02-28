@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tool.Configs;
+using Tool.Helpers;
 
 namespace Tool
 {
@@ -26,6 +28,9 @@ namespace Tool
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Config>(Configuration.GetSection("Config"));
+            services.AddScoped<FileHelper>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
