@@ -56,3 +56,5 @@ dkms.conf
 Tool/bin/
 
 Tool/obj/
+
+Tool/Properties/PublishProfiles/

@@ -2,7 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>72a7d550-fc81-4d44-bde2-2ea69f8fa4a7</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Bat\CreateTemplate.bat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Bat\CreateTemplate.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />

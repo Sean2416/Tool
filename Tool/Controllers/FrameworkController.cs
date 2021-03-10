@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using System.Threading;
 using System.Threading.Tasks;
 using Tool.Configs;
 using Tool.Helpers;
@@ -34,44 +35,48 @@ namespace Tool.Controllers
         [HttpGet]
         public async Task<string> Get()
         {
-            return "Framework Get";
+            return ".\\Bat\\CreateTemplate.bat"
+                .ExecuteCommand(
+                new List<string> {
+                    "MYABP","TestDir"
+                });
         }
 
-        [HttpPost]
-        public FileResult Post(InitProjectInput input)
-        {
-            try
-            {
-                new List<string>
-                {
-                    $"cd /d {Config.TmpPath}",
-                    $"dotnet new ABP_JWT -n {input.ProjectName}"
-                }.ExecuteCommand();
+        //[HttpPost]
+        //public FileResult Post(InitProjectInput input)
+        //{
+        //    try
+        //    {
+        //        new List<string>
+        //        {
+        //            $"cd /d {Config.TmpPath}",
+        //            $"dotnet new ABP_JWT -n {input.ProjectName}"
+        //        }.ExecuteCommand();
 
-                var fileBytes = Helper.GetZipFile(input.ProjectName);
+        //        var fileBytes = Helper.GetZipFile(input.ProjectName);
 
 
-                new List<string>
-                {
-                    $"cd /d {Config.TmpPath}",
-                    $"rmdir /Q /S  {input.ProjectName}",
-                    $"del {$"{Config.TmpPath}\\{input.ProjectName}.zip"}"
+        //        new List<string>
+        //        {
+        //            $"cd /d {Config.TmpPath}",
+        //            $"rmdir /Q /S  {input.ProjectName}",
+        //            $"del {$"{Config.TmpPath}\\{input.ProjectName}.zip"}"
 
-                }.ExecuteCommand();
+        //        }.ExecuteCommand();
 
-                return File(fileBytes, "application/zip", $"{input.ProjectName}.zip");
-            }
-            catch (Exception ex)
-            {
-                new List<string>
-                {
-                    $"cd /d {Config.TmpPath}",
-                    $"rmdir /Q /S  {input.ProjectName}",
-                    $"del {$"{Config.TmpPath}\\{input.ProjectName}.zip"}"
-                }.ExecuteCommand();
+        //        return File(fileBytes, "application/zip", $"{input.ProjectName}.zip");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        new List<string>
+        //        {
+        //            $"cd /d {Config.TmpPath}",
+        //            $"rmdir /Q /S  {input.ProjectName}",
+        //            $"del {$"{Config.TmpPath}\\{input.ProjectName}.zip"}"
+        //        }.ExecuteCommand();
 
-                return null;
-            }
-        }
+        //        return null;
+        //    }
+        //}
     }
 }
