@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <None Remove="Bat\CreateTemplate.bat" />
+    <None Remove="Bat\DeleteTemplate.bat" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Bat\DeleteTemplate.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Bat\CreateTemplate.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

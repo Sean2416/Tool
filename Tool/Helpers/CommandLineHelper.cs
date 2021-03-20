@@ -9,36 +9,6 @@ namespace Tool.Helpers
 {
     public static class CommandLineHelper
     {
-        //public static string ExecuteCommand(this List<string> cmdList)
-        //{
-
-        //    try
-        //    {
-
-        //        Process cmd = new Process();
-
-        //        cmd.StartInfo.FileName = "cmd.exe";
-        //        cmd.StartInfo.RedirectStandardInput = true;
-        //        cmd.StartInfo.RedirectStandardOutput = true;
-        //        cmd.StartInfo.CreateNoWindow = true;
-        //        cmd.StartInfo.UseShellExecute = false;
-
-        //        cmd.Start();
-
-        //        foreach (var command in cmdList)
-        //            cmd.StandardInput.WriteLine(command);
-
-        //        cmd.StandardInput.Flush();
-        //        cmd.StandardInput.Close();
-
-        //        return (cmd.StandardOutput.ReadToEnd());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ex.Message;
-        //    }
-        //}
-
         public static string ExecuteCommand(this string filePath, List<string> args = null)
         {
             var process = new Process();

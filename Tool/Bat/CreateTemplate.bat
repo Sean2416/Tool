@@ -1,6 +1,9 @@
-set arg1=%1
-set arg2=%2
+set templatePath=%1
+set tmpPath=%2
+set projectName=%3
+
+dotnet new -u %templatePath%
+dotnet new -i %templatePath%
 cd d:\
-cd /d D:\Tmp
-dotnet new ABP_JWT -n %arg1%
-mkdir %arg2%
+cd /d %tmpPath%
+dotnet new ABP_JWT -n %projectName%

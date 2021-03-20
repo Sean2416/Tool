@@ -7,6 +7,8 @@ namespace Tool.Configs
 {
     public class Config
     {
+        public string TemplatePath { get; set; }
+
         public string TmpPath { get; set; }
     }
 }
