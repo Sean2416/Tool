@@ -9,6 +9,9 @@ namespace Tool.Helpers
     {
         private Aes AesHandler { get; }
 
+        public EncryptHelper()
+        {
+        }
         public EncryptHelper(string key,string iv)
         {
             AesHandler = Aes.Create();
@@ -36,6 +39,14 @@ namespace Tool.Helpers
                 CryptoStreamMode.Read);
             using var reader = new StreamReader(crypto);
             return reader.ReadToEnd();
+        }
+
+        public  string ShaEncrypt(string source)
+        {
+            using SHA256 sha256 = new SHA256CryptoServiceProvider();
+            byte[] bytes = Encoding.Default.GetBytes(source);
+            byte[] sha256Bytes = sha256.ComputeHash(bytes);
+            return Convert.ToBase64String(sha256Bytes);
         }
     }
 }

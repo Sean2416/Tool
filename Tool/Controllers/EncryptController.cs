@@ -15,21 +15,30 @@ namespace Tool.Controllers
         }
 
         /// <summary>
-        ///  字串加密
+        ///  Aes字串加密
         /// </summary>
         [HttpPost]
-        public string Encrypt(EncryptInput input)
+        public string AesEncrypt(EncryptInput input)
         {
             return new EncryptHelper(input.Key,input.IV).Encrypt(input.EncryptString);
         }
 
         /// <summary>
-        ///  字串解密
+        ///  Aes字串解密
         /// </summary>
         [HttpPost]
-        public string Decrypt(DecryptInput input)
+        public string AesDecrypt(DecryptInput input)
         {
             return new EncryptHelper(input.Key, input.IV).Decrypt(input.DecryptString);
+        }
+
+        /// <summary>
+        ///  Sha單向加密
+        /// </summary>
+        [HttpPost]
+        public string ShaEncrypt(string encryptString)
+        {
+            return new EncryptHelper().ShaEncrypt(encryptString);
         }
     }
 }
