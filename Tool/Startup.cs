@@ -1,3 +1,5 @@
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tool.Configs;
 using Tool.Helpers;
+using Tool.Tasks;
+using Tradevan_Hangfire;
 
 namespace Tool
 {
@@ -30,6 +34,20 @@ namespace Tool
         {
             services.Configure<Config>(Configuration.GetSection("Config"));
             services.AddScoped<FileHelper>();
+
+            var connectionString = Configuration["HangfireConfig:ConnectionString"];
+
+            services.HangfireServices<ScheduleManagerExtension>(Configuration, config =>
+            {
+                config.UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true // Migration to Schema 7 is required
+                });
+            });
 
             services.AddControllers();
 
@@ -59,6 +77,19 @@ namespace Tool
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.ToUseHangfireServer(new BackgroundJobServerOptions()
+            {
+                ServerName = String.Format($"{Environment.MachineName}.{Guid.NewGuid()}"), //預設使用電腦名稱:ProcessID，例如：server1:9853，server1:4531，server2:6742
+                WorkerCount = 20, //執行緒使用數量，預設 20 
+                Queues = new[] { "default" }, //佇列名稱，可以多筆，預設 default，如果你的任務想要用別的名稱，一開始就要宣告
+                CancellationCheckInterval = TimeSpan.FromSeconds(5), //任務取消檢查週期，預設 00:00:05 (5秒)
+                ServerTimeout = TimeSpan.FromMinutes(5),//服務逾時，預設 00:05:00 (5 分鐘)
+                ServerCheckInterval = TimeSpan.FromMinutes(5), //服務檢查週期，預設 00:05:00 (5 分鐘)
+                SchedulePollingInterval = TimeSpan.FromSeconds(15), //執行排程任務的輪詢週期，預設 00:00:15 (15秒)，每 15 秒執行一次任務
+                ShutdownTimeout = TimeSpan.FromSeconds(15), //關閉逾時，預設 00:00:15 (15秒)
+                StopTimeout = TimeSpan.FromSeconds(15), //停止逾時，預設 00:00:00
+            });
 
             app.UseEndpoints(endpoints =>
             {

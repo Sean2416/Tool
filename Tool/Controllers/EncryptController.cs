@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using Tool.Helpers;
 using Tool.Models;
 
@@ -9,17 +11,14 @@ namespace Tool.Controllers
     [ApiController]
     public class EncryptController : ControllerBase
     {
-
-        public EncryptController()
-        {
-        }
-
         /// <summary>
         ///  Aes字串加密
         /// </summary>
         [HttpPost]
         public string AesEncrypt(EncryptInput input)
         {
+            BackgroundJob.Enqueue(() => Console.WriteLine("Once Job"));
+
             return new EncryptHelper(input.Key,input.IV).Encrypt(input.EncryptString);
         }
 
