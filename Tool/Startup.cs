@@ -15,8 +15,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tool.Configs;
 using Tool.Helpers;
+using Tool.Mail;
 using Tool.Tasks;
 using Tradevan_Hangfire;
+using Tradevan_Mail;
 
 namespace Tool
 {
@@ -35,6 +37,7 @@ namespace Tool
             services.Configure<Config>(Configuration.GetSection("Config"));
             services.AddScoped<FileHelper>();
 
+
             var connectionString = Configuration["HangfireConfig:ConnectionString"];
 
             services.HangfireServices<ScheduleManagerExtension>(Configuration, config =>
@@ -48,6 +51,9 @@ namespace Tool
                     DisableGlobalLocks = true // Migration to Schema 7 is required
                 });
             });
+
+            services.RegisterMailServices(Configuration);
+            services.AddTransient<MailManager>();
 
             services.AddControllers();
 

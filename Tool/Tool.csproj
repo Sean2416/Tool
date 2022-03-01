@@ -23,6 +23,7 @@
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.25" />
     <PackageReference Include="Hangfire_Tradevan" Version="1.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
+    <PackageReference Include="Tradevan_Mail" Version="1.0.0" />
   </ItemGroup>
 
 
