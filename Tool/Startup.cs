@@ -1,24 +1,11 @@
-using Hangfire;
-using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Tool.Configs;
 using Tool.Helpers;
-using Tool.Mail;
-using Tool.Hangfire;
-using Tradevan_Hangfire;
-using Tradevan_Mail;
 
 namespace Tool
 {
@@ -40,20 +27,6 @@ namespace Tool
 
             var connectionString = Configuration["HangfireConfig:ConnectionString"];
 
-            services.HangfireServices<ScheduleManagerExtension>(Configuration, config =>
-            {
-                config.UseSqlServerStorage(connectionString, new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    DisableGlobalLocks = true // Migration to Schema 7 is required
-                });
-            });
-
-            services.RegisterMailServices(Configuration);
-            services.AddTransient<MailManager>();
 
             services.AddControllers();
             //return Data ºû«ù¤j¤p¼g
@@ -89,10 +62,6 @@ namespace Tool
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseHangfireDashboard("/hangfire", new DashboardOptions
-            {
-            });
 
             app.UseEndpoints(endpoints =>
             {

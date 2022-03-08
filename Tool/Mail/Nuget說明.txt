@@ -1,7 +1,0 @@
-Nuget Svr: http://172.31.70.232:7788/
-發布方式參考: https://docs.microsoft.com/zh-tw/nuget/quickstart/create-and-publish-a-package-using-visual-studio?tabs=netcore-cli
-
-發布流程
-1. 程式打包完成後，在debug資料夾內會有 XXX.nupkg檔案
-2. 打開CLI將路徑指向 檔案所在位置
-3. 執行:  dotnet nuget push package名稱 --api-key 3bb42b22-081c-4e45-be37-9311773c315a --source http://172.31.70.232:7788/nuget 

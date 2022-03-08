@@ -1,5 +1,4 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using Tool.Helpers;
 using Tool.Models;
@@ -17,7 +16,6 @@ namespace Tool.Controllers
         [HttpPost]
         public string AesEncrypt(EncryptInput input)
         {
-            BackgroundJob.Enqueue(() => Console.WriteLine("Once Job"));
 
             return new EncryptHelper(input.Key,input.IV).Encrypt(input.EncryptString);
         }

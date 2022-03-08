@@ -1,13 +1,8 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Tool.Excel;
-using Tool.Mail;
-using Tool.Models;
 
 namespace Tool.Controllers
 {
@@ -15,26 +10,11 @@ namespace Tool.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        private readonly MailManager mailService;
-        public SampleController(MailManager mailService)
+        public SampleController()
         {
-            this.mailService = mailService;
         }
 
-        [HttpPost("SendMail")]
-        public async Task<IActionResult> SendMail()
-        {
-            try
-            {
-                BackgroundJob.Enqueue<MailManager>(r => r.SendRegisterMail("測試信件"));
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-        }
+  
 
         [HttpPost("MappingTest")]
         public async Task<IActionResult> MappingTest()
@@ -49,11 +29,12 @@ namespace Tool.Controllers
                       new Student{ Id = 4,Name="葉紅魚",Sex="女",BirthDay=new DateTime(1999,10,10) }
                   };
 
-                new ExcelMapper<Student>()
-                .Map("Name", r => r.Name + "AAAAA")
-                .Map("Type", r => r.BirthDay)
-                .CreateExcel(students);
+               var mapper =  new ExcelMapper<Student>()
+                .Map("Name", r => r.Name)
+                .Map("Type", r => r.Sex);
 
+                new ExcelInfo().InsertData(mapper, students)
+                    .GetMemoryStream().ExportExcelFile("D:\\work\\test.xlsx");
 
                 return Ok();
             }
