@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Tool.Tasks
+namespace Tool.Hangfire
 {
     public class Sample1 
     {

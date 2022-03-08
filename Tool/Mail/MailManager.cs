@@ -13,17 +13,9 @@ namespace Tool.Mail
             MailService = mailService;
         }
 
-        public void ResetMailConfig()
-        {
-            MailConfig.Account = "sean24163@gmail.com";
-            MailConfig.Password = "Se@n0624";
-        }
-
 
         public async Task SendRegisterMail(string sub)
         {
-            ResetMailConfig();
-
             var email = new MailRequest
             {
                 ToMails = "Sean24163@hotmail.com,Sean24163@gmail.com",

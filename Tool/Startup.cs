@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using Tool.Configs;
 using Tool.Helpers;
 using Tool.Mail;
-using Tool.Tasks;
+using Tool.Hangfire;
 using Tradevan_Hangfire;
 using Tradevan_Mail;
 
@@ -54,6 +54,12 @@ namespace Tool
 
             services.RegisterMailServices(Configuration);
             services.AddTransient<MailManager>();
+
+            services.AddControllers();
+            //return Data ºû«ù¤j¤p¼g
+            services.AddControllers()
+             .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
 
             services.AddControllers();
 

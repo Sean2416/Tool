@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Tool.Mail;
 using Tradevan_Hangfire;
 
-namespace Tool.Tasks
+namespace Tool.Hangfire
 {
     public class ScheduleManagerExtension : ScheduleManager
     {
