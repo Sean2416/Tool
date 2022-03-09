@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Tool.Configs;
 using Tool.Helpers;
+using Tool.Excel;
 
 namespace Tool
 {
@@ -24,6 +25,7 @@ namespace Tool
             services.Configure<Config>(Configuration.GetSection("Config"));
             services.AddScoped<FileHelper>();
 
+            services.AddExcelService();
 
             var connectionString = Configuration["HangfireConfig:ConnectionString"];
 

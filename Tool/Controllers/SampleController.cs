@@ -10,8 +10,13 @@ namespace Tool.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        public SampleController()
+        private SchoolExcelService SchoolExcelService;
+        private CompanyExcelService CompanyExcelService;
+
+        public SampleController(SchoolExcelService schoolExcelService, CompanyExcelService companyExcelService)
         {
+            SchoolExcelService = schoolExcelService;
+            CompanyExcelService = companyExcelService;
         }
 
   
@@ -20,21 +25,14 @@ namespace Tool.Controllers
         public async Task<IActionResult> MappingTest()
         {
             try
-            {
-                List<Student> students = new List<Student>
-                  {
-                      new Student{ Id = 1,Name="夫子",Sex="男",BirthDay=new DateTime(1999,10,11) },
-                      new Student{ Id = 2,Name="餘簾",Sex="女",BirthDay=new DateTime(1999,12,12) },
-                      new Student{ Id = 3,Name="李慢慢",Sex="男",BirthDay=new DateTime(1999,11,11) },
-                      new Student{ Id = 4,Name="葉紅魚",Sex="女",BirthDay=new DateTime(1999,10,10) }
-                  };
+            {          
+                var excel = SchoolExcelService.CreateExcel();
 
-               var mapper =  new ExcelMapper<Student>()
-                .Map("Name", r => r.Name)
-                .Map("Type", r => r.Sex);
+                SchoolExcelService.ExportExcelFile(excel, "C:\\Work\\Git\\AAAA.xlsx");
 
-                new ExcelInfo().InsertData(mapper, students)
-                    .GetMemoryStream().ExportExcelFile("D:\\work\\test.xlsx");
+                excel = CompanyExcelService.CreateExcel();
+
+                CompanyExcelService.ExportExcelFile(excel, "C:\\Work\\Git\\BBB.xlsx");
 
                 return Ok();
             }
