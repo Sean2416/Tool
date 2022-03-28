@@ -1,3 +1,5 @@
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Tool.Configs;
 using Tool.Helpers;
+using TradevanHangfire;
 
 namespace Tool
 {
@@ -40,6 +43,11 @@ namespace Tool
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tool List API", Version = "v1" });
             });
+
+            var storage = new SqlServerStorage(Configuration["HangfireConfig:ConnectionString"], new SqlServerStorageOptions());
+
+            services.HangfireServices(Configuration, storage);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +70,8 @@ namespace Tool
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions());
 
             app.UseEndpoints(endpoints =>
             {
